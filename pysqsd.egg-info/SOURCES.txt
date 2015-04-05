@@ -1,0 +1,9 @@
+setup.py
+pysqsd/__init__.py
+pysqsd.egg-info/PKG-INFO
+pysqsd.egg-info/SOURCES.txt
+pysqsd.egg-info/dependency_links.txt
+pysqsd.egg-info/entry_points.txt
+pysqsd.egg-info/not-zip-safe
+pysqsd.egg-info/requires.txt
+pysqsd.egg-info/top_level.txt
