@@ -1,13 +1,13 @@
-import os
-import httplib
-import logging
-import datetime
-import time
 
-import boto.sqs
 #logging.basicConfig(filename="sqs.log", level=logging.DEBUG)
 
 def main():
+    import os
+    import httplib
+    import logging
+    import datetime
+    import time
+    import boto.sqs
     SQS_QUEUE = os.environ['SQS_QUEUE'];
     AWS_ACCESS_KEY = os.environ['AWS_ACCESS_KEY_ID']
     AWS_SECRET_KEY = os.environ['AWS_SECRET_KEY']
