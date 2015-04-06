@@ -7,7 +7,13 @@ def main():
     import logging
     import datetime
     import time
+    import sys
     import boto.sqs
+
+    logging.basicConfig(format="%(asctime)s %(name)s:%(levelname)s - %(message)s")
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
+
     SQS_QUEUE = os.environ['SQS_QUEUE'];
     AWS_ACCESS_KEY = os.environ['AWS_ACCESS_KEY_ID']
     AWS_SECRET_KEY = os.environ['AWS_SECRET_KEY']
@@ -19,8 +25,9 @@ def main():
          aws_access_key_id=AWS_ACCESS_KEY,
          aws_secret_access_key=AWS_SECRET_KEY)
     q = conn.get_queue(SQS_QUEUE)
+    logger.info("started")
     while True and q:
-        # set 30 minutes of inavailability
+        # set 30 seconds of inavailability
         conn = httplib.HTTPConnection(WORKER_HOST)
         m = q.read(SQS_QUEUE_TIMEOUT)
         if m:
@@ -30,6 +37,7 @@ def main():
             body = m.get_body()
             # Get the response
             try:
+                logger.info("Received message "+m.id)
                 # Default python server port
                 headers = { "Content-type": "application/json", 
                         "Accept": "text/plain",
@@ -45,19 +53,17 @@ def main():
                 conn.request("POST", "/", body, headers)
                 response = conn.getresponse()
             # The server retuns a 200, we can delete
-                print response.status
+                logger.info('Response status '+`response.status`)
                 if response.status == 200:
                     q.delete_message(m)
-                    logging.info('deleted message')
+                    logger.info('Deleted message '+m.id)
                 else:
                     m.change_visibility(0)
-                    logging.error(`response.status`+":"+`response.reason`)
+                    logger.error(`response.status`+":"+`response.reason`)
             except:
                 m.change_visibility(0)
-                print 'Server down'
-                logging.error("Connection closed abruptly")
-                print 'Closed abruptly'
-                time.sleep(5)
+                logger.error("Connection closed abruptly")
+                time.sleep(5000)
 
 if __name__ == '__main__':
     main()
