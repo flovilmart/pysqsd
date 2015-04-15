@@ -5,7 +5,7 @@ import pysqsd
 
 setup(
     name='pysqsd',
-    version="0.0.1",
+    version="0.0.2",
     description="SQS Daemon inspired by Elastic Beanstalk's sqsd",
     author='Florent Vilmart',
     author_email='florentvilmart@me.com',
