@@ -38,6 +38,8 @@ def main():
             # for property, value in vars(m).iteritems():
             #     print property, ": ", value
             body = m.get_body()
+            logger.info(WORKER_PATH)
+            logger.info(body)
             sent_at = m.attributes['SentTimestamp']
             first_recieved = m.attributes['ApproximateFirstReceiveTimestamp']
 
@@ -84,7 +86,7 @@ def main():
                     else:
                         logger.info("Skipping message attribute "+key+" as header is already set")
                 # Post to local server
-                conn.request("POST", "/", body, headers)
+                conn.request("POST", WORKER_PATH, body, headers)
                 response = conn.getresponse()
             # The server retuns a 200, we can delete
                 logger.info('Response status '+`response.status`)
@@ -97,7 +99,7 @@ def main():
             except:
                 m.change_visibility(0)
                 logger.error("Connection closed abruptly")
-            time.sleep(SQS_SLEEP)
+            time.sleep(float(SQS_SLEEP))
 
 if __name__ == '__main__':
     main()
