@@ -99,7 +99,7 @@ def main():
             except:
                 m.change_visibility(0)
                 logger.error("Connection closed abruptly")
-            time.sleep(float(SQS_SLEEP))
+                time.sleep(float(SQS_SLEEP))
 
 if __name__ == '__main__':
     main()
